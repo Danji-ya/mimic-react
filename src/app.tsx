@@ -29,11 +29,19 @@ class App {
 
   markup() {
     return (
-      <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-      </ul>
+      <div>
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+        <div>책목록</div>
+        <ul>
+          {books.map((book) => (
+            <li>{book.name}</li>
+          ))}
+        </ul>
+      </div>
     );
   }
 }

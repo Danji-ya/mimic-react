@@ -15,6 +15,10 @@ function jsx(name: string, attributes: TAttribute, ...children: any[]) {
 }
 
 function addChild(parent: DocumentFragment | HTMLElement, childNode: any): any {
+  // 배열 형식일 때
+  if (Array.isArray(childNode))
+    return childNode.forEach((c) => addChild(parent, c));
+
   // object 형식일 때 이미 하위에서 node로 만들어진 것
   if (typeof childNode === "object") {
     return parent.appendChild(childNode);
