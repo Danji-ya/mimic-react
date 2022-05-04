@@ -1,3 +1,6 @@
+/** @jsx jsx */
+import jsx from "./core/jsx-runtime";
+
 const books = [
   { name: "star" },
   { name: "rain" },
@@ -25,11 +28,13 @@ class App {
   }
 
   markup() {
-    const node = document.createElement("div");
-    const text = document.createTextNode("hello");
-    node.appendChild(text);
-
-    return node;
+    return (
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </ul>
+    );
   }
 }
 
