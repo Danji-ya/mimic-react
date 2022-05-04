@@ -1,12 +1,16 @@
 type TAttribute = Record<string, any>;
 
 function jsx(name: string, attributes: TAttribute, ...children: any[]) {
-  console.log(name, children);
-  const node = document.createElement(name);
+  const node =
+    name === "fragment"
+      ? document.createDocumentFragment()
+      : document.createElement(name);
 
-  Object.entries(attributes || {}).forEach(([key, value]) => {
-    node.setAttribute(key, value);
-  });
+  if (!(node instanceof DocumentFragment)) {
+    Object.entries(attributes || {}).forEach(([key, value]) => {
+      node.setAttribute(key, value);
+    });
+  }
 
   // 자식 노드들 처리
   (children || []).forEach((childNode) => addChild(node, childNode));

@@ -40,6 +40,9 @@ class App {
         </ul>
         {false && <div>hidden</div>}
         {true && <div>show me</div>}
+        <fragment>
+          <div>fragment child</div>
+        </fragment>
       </div>
     );
   }
