@@ -18,6 +18,9 @@ function addChild(parent: DocumentFragment | HTMLElement, childNode: any): any {
   // 아무것도 없을 때
   if (typeof childNode === "undefined" || childNode === null) return;
 
+  // false 일경우 아무것도 안보이게
+  if (typeof childNode === "boolean") return;
+
   // 배열 형식일 때
   if (Array.isArray(childNode))
     return childNode.forEach((c) => addChild(parent, c));

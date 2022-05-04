@@ -41,6 +41,8 @@ class App {
             <li>{book.name}</li>
           ))}
         </ul>
+        {false && <div>hidden</div>}
+        {true && <div>show me</div>}
       </div>
     );
   }
