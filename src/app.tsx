@@ -1,6 +1,3 @@
-/** @jsx jsx */
-import jsx from "./core/jsx-runtime";
-
 const books = [
   { name: "star" },
   { name: "rain" },

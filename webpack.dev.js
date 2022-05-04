@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const { ProvidePlugin } = require("webpack");
 
 module.exports = {
   mode: "development",
@@ -23,7 +24,15 @@ module.exports = {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env", "@babel/preset-typescript"],
-            plugins: ["@babel/plugin-transform-react-jsx"],
+            plugins: [
+              [
+                "@babel/plugin-transform-react-jsx",
+                {
+                  runtime: "classic",
+                  pragma: "jsx",
+                },
+              ],
+            ],
           },
         },
         exclude: /(node_modules)/,
@@ -31,6 +40,12 @@ module.exports = {
     ],
   },
   plugins: [
+    new ProvidePlugin({
+      jsx: [
+        path.resolve(path.join(__dirname, "src/core/jsx-runtime.ts")),
+        "default",
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: "./index.html",
     }),
