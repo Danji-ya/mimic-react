@@ -1,16 +1,16 @@
-import { TAttribute } from "../types/jsx";
+import { AttributeType, VDomType } from "../types/jsx";
 
-function createElement(type: string, attributes: TAttribute, ...children: any[]) {
+function jsx(type: VDomType, attributes: AttributeType, ...children: any[]) {
   const childrenElements = children.reduce((acc: any[], child:any) => {
     if (typeof child == null) return acc;
     if (typeof child === "boolean") return acc;
 
     typeof child === "object"
       ? acc.push(child)
-      : acc.push(createElement("TEXT_NODE", { 'textContent': child }));
+      : acc.push(jsx("TEXT_NODE", { 'textContent': child }));
 
     return acc;
-  }, [])
+  }, []);
 
   return {
     type,
@@ -19,4 +19,4 @@ function createElement(type: string, attributes: TAttribute, ...children: any[])
   }
 }
 
-export default createElement;
+export default jsx;

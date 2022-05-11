@@ -1,12 +1,22 @@
-type TAttribute = Record<string, any>;
+import Component from "../Dj/Component";
+
+type AttributeType = Record<string, any>;
 
 interface IDom {
-  type: string, 
-  attributes: TAttribute, 
+  type: VDomType, 
+  attributes: AttributeType, 
   children: any[],
 }
 
+interface IComponent {
+  new (props: AttributeType): Component;
+}
+
+type VDomType = IComponent | string;
+
+
 export {
-  TAttribute,
-  IDom
+  AttributeType,
+  IDom,
+  VDomType
 }

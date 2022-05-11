@@ -42,7 +42,7 @@ module.exports = {
   plugins: [
     new ProvidePlugin({
       jsx: [
-        path.resolve(path.join(__dirname, "src2/Dj/createElement.ts")),
+        path.resolve(path.join(__dirname, "src2/Dj/jsx.ts")),
         "default",
       ],
     }),

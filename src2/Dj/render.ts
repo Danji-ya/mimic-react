@@ -5,21 +5,38 @@ function render(vDOM: IDom, container: Element | null, oldDOM?: IDom) {
 }
 
 function vDomToNode(vDOM: IDom, container: Element | null, oldDOM?: IDom) {
-  originNode(vDOM, container, oldDOM);
+
+  if(isComponentType(vDOM)){
+    componentNode(vDOM, container, oldDOM);
+  } else {
+    originNode(vDOM, container, oldDOM);
+  }
+}
+
+function componentNode(vDOM: IDom, container: Element | null, oldDOM?: IDom) {
+  if(typeof vDOM.type === 'string') return;
+  
+  const C =  vDOM.type;
+  
+  const component = new C(vDOM.attributes || {});
+  const componentVDOM = component.render();
+
+  vDomToNode(componentVDOM, container, oldDOM);
 }
 
 
 function originNode(vDOM: IDom, container: Element | null, oldDOM?: IDom) {
   let newNode: any = null;
+  const vDOMType = String(vDOM.type);
 
-  if (vDOM.type === 'TEXT_NODE') {
+  if (vDOMType === 'TEXT_NODE') {
     const {textContent} = vDOM.attributes;
 
     newNode = document.createTextNode(textContent);
   } else {
-    newNode = vDOM.type === "fragment"
+    newNode = vDOMType === "fragment"
       ? document.createDocumentFragment()
-      : document.createElement(vDOM.type);
+      : document.createElement(vDOMType);
 
     if(!(newNode instanceof DocumentFragment)) {
       updateNode(newNode, vDOM);
@@ -38,5 +55,7 @@ function updateNode(newNode: any, vDOM: any){
       newNode.setAttribute(key, value);
     });
 }
+
+const isComponentType = (vDOM: IDom)  => Object.getPrototypeOf(vDOM.type).DJ_COMPONENT;
 
 export default render;
