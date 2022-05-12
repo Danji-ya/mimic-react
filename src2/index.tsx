@@ -9,7 +9,7 @@ const books = [
   { name: "you Dont know JS" },
 ];
 
-class Test extends Dj.Component {
+class Test3 extends Dj.Component {
   constructor(props: AttributeType){
     super(props);
   }
@@ -17,7 +17,6 @@ class Test extends Dj.Component {
     return (
       <div>
         <Test2 />
-        <Test3 />
       </div>
     )
   }
@@ -34,13 +33,23 @@ class Test2 extends Dj.Component {
   }
 }
 
-class Test3 extends Dj.Component {
+class Test extends Dj.Component {
   constructor(props: AttributeType){
     super(props);
+
+    this.handleClick = this.handleClick.bind(this);
   }
+
+
+  handleClick(event: MouseEvent) {
+    console.log('target:', event.target);
+    console.log('this', this);
+  }
+
+
   render() {
     return (
-      <div>
+      <div onClick={this.handleClick}>
         <div>책목록</div>
         <ul>
           {books.map((book) => (
@@ -48,7 +57,6 @@ class Test3 extends Dj.Component {
           ))}
         </ul>
         {false && <div>hidden</div>}
-        {true && <div>show me</div>}
         <fragment>
           <div>fragment child</div>
         </fragment>

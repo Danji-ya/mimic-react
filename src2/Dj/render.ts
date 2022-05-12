@@ -49,9 +49,16 @@ function originNode(vDOM: IDom, container: Element | null, oldDOM?: IDom) {
   container?.appendChild(newNode);
 }
 
-function updateNode(newNode: any, vDOM: any){
+function updateNode(newNode: HTMLElement, vDOM: IDom){
     // 이벤트나 속성 처리
     Object.entries(vDOM.attributes || {}).forEach(([key, value]) => {
+      if(key.startsWith('on')){
+        const eventType = key.slice(2).toLocaleLowerCase();
+        newNode.addEventListener(eventType, value);
+
+        return;
+      }
+      
       newNode.setAttribute(key, value);
     });
 }
