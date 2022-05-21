@@ -5,7 +5,7 @@ const { ProvidePlugin } = require("webpack");
 module.exports = {
   mode: "development",
   entry: {
-    main: "./src2/index.tsx",
+    main: "./v2/index.tsx",
   },
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx"],
@@ -42,7 +42,7 @@ module.exports = {
   plugins: [
     new ProvidePlugin({
       jsx: [
-        path.resolve(path.join(__dirname, "src2/Dj/jsx.ts")),
+        path.resolve(path.join(__dirname, "v2/Dj/jsx.ts")),
         "default",
       ],
     }),

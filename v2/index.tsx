@@ -60,6 +60,7 @@ class Test extends Dj.Component {
         <fragment>
           <div>fragment child</div>
         </fragment>
+        <Test3 />
       </div>
     )
   }
