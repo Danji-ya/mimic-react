@@ -44,7 +44,10 @@ class Test extends Dj.Component {
         <button onClick={this.handleClick}>책목록</button>
         <ul>
           {books.map((book: IBook) => (
-            <li>{book.content}</li>
+            <li>
+              <input type="checkbox" class="toggle" checked={book.completed} />
+              {book.content}
+            </li>
           ))}
         </ul>
       </div>
