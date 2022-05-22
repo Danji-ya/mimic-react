@@ -18,6 +18,7 @@ abstract class Component {
     const realDOM = this._DOM;
 
     nodeCompare(vDOM, realDOM.parentNode, this._vDOM);
+    this._vDOM = vDOM; // 이전 vDOM 갱신
   }
 
   static DJ_COMPONENT = true;
