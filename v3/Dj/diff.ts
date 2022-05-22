@@ -1,8 +1,6 @@
 import { IDom } from "../types/jsx";
 import { createOriginNode, isComponentType, vDomToNode } from "./render";
 
-// TODO: 새로 생긴 것 처리시 appendChild로 중복적으로 붙여지는 문제 해결 container?.appendChild(newNode); 이부분
-
 // TODO: 경우의 수 테스트
 
 // TODO: 컴포넌트 타입 처리
@@ -10,7 +8,6 @@ import { createOriginNode, isComponentType, vDomToNode } from "./render";
 // TODO: 기존 렌더 attribute부분도 checked와 같은 속성 값 예외 처리
 
 function nodeCompare(vDOM: IDom, container: Node | null , oldDOM?: IDom, idx: number = 0){
-  console.log(vDOM, oldDOM);
 
   if(vDOM && !oldDOM){
     console.log('그냥 새로생긴 것');
@@ -38,6 +35,7 @@ function nodeCompare(vDOM: IDom, container: Node | null , oldDOM?: IDom, idx: nu
 
   // type이 text일 경우
   if(vDOM.type === 'TEXT_NODE' && oldDOM.type === 'TEXT_NODE') {
+    console.log('text 타입인 경우');
     const { newTextContent } = vDOM.attributes;
     const { oldTextContent } = oldDOM.attributes;
 
@@ -54,9 +52,12 @@ function nodeCompare(vDOM: IDom, container: Node | null , oldDOM?: IDom, idx: nu
     updateNode(container.childNodes[idx] as HTMLElement, vDOM, oldDOM);
 
     // DOM 노드의 처리가 끝나면, React는 이어서 해당 노드의 자식들을 재귀적으로 처리
-    vDOM.children.forEach((child, i) => {
-      nodeCompare(child, container.childNodes[idx], oldDOM.children[i], i);
-    })
+    for(let i=0; i < getMaxLength(vDOM.children.length, oldDOM.children.length); i+=1){
+      const newDomChild = vDOM.children[i];
+      const oldDomChild = oldDOM.children[i];
+
+      nodeCompare(newDomChild, container.childNodes[idx], oldDomChild, i);
+    }
   }
 }
 
@@ -92,5 +93,7 @@ function updateNode(newNode: HTMLElement ,vDOM: IDom, oldDOM?: IDom) {
     newNode.removeAttribute(key);
   });
 }
+
+const getMaxLength = (first: number = 0, second: number = 0) => Math.max(first, second);
 
 export default nodeCompare;

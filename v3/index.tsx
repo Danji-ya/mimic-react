@@ -41,7 +41,6 @@ class Test extends Dj.Component {
 
     return (
       <div>
-        <button onClick={this.handleClick}>책목록</button>
         <ul>
           {books.map((book: IBook) => (
             <li>
@@ -50,6 +49,7 @@ class Test extends Dj.Component {
             </li>
           ))}
         </ul>
+        {books.length < 3 && <button onClick={this.handleClick}>책목록</button>}
       </div>
     )
   }
