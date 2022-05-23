@@ -1,11 +1,10 @@
-import { IDom } from "../types/jsx";
+import { IDom, INode } from "../types/jsx";
 
 function render(vDOM: IDom, container: Node, oldDOM?: IDom) {
   vDomToNode(vDOM, container);
 }
 
 export function vDomToNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
-
   if(isComponentType(vDOM)){
     componentNode(vDOM, container, oldDOM);
   } else {
@@ -20,51 +19,49 @@ export function componentNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
   
   const component = new C(vDOM.attributes || {});
   const componentVDOM = component.render();
-  componentVDOM.DJ_COMPONENT = component;
+  componentVDOM.DJ_COMPONENT = component; // component 식별을 위한 것
 
   vDomToNode(componentVDOM, container, oldDOM);
 }
 
 
 export function originNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
-  let newNode: any = createOriginNode(vDOM);
+  let newNode: Node = createOriginNode(vDOM);
 
+  
   // 실제 부착
   container?.appendChild(newNode);
 }
 
 
 export function createOriginNode(vDOM: IDom) {
-  let newNode: any = null;
+  let newNode: INode = null;
   const vDOMType = String(vDOM.type);
 
   if (vDOMType === 'TEXT_NODE') {
     const {textContent} = vDOM.attributes;
 
     newNode = document.createTextNode(textContent);
+    updateNodeVDOM(newNode, vDOM);
   } else {
     newNode = vDOMType === "fragment"
       ? document.createDocumentFragment()
       : document.createElement(vDOMType);
 
     if(!(newNode instanceof DocumentFragment)) {
-      updateNode(newNode, vDOM);
+      updateNode(newNode as Element, vDOM);
     }
   }
 
+  // 가장 최상단의 Node일 경우 해당 dom을 저장
+  if(vDOM.DJ_COMPONENT) vDOM.DJ_COMPONENT._DOM = newNode;
+
   vDOM.children.forEach((child: any) => vDomToNode(child, newNode));
   
-  
-  // 가장 최상단의 Node일 경우 해당 dom을 저장
-  if(vDOM.DJ_COMPONENT) {
-    vDOM.DJ_COMPONENT._DOM = newNode;
-    vDOM.DJ_COMPONENT._vDOM = vDOM;
-  }
-
   return newNode;
 }
 
-export function updateNode(newNode: HTMLElement, vDOM: IDom, oldDOM?: IDom) {
+export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
   const newProps = vDOM.attributes || {};
   const oldProps = oldDOM && oldDOM.attributes || {};
 
@@ -99,8 +96,13 @@ export function updateNode(newNode: HTMLElement, vDOM: IDom, oldDOM?: IDom) {
     }
     newNode.removeAttribute(key);
   });
+
+  // 이전 노드를 비교할 vDOM
+  updateNodeVDOM(newNode, vDOM);
 }
 
 export const isComponentType = (vDOM: IDom)  => Object.getPrototypeOf(vDOM.type).DJ_COMPONENT;
+
+export const updateNodeVDOM = (node: INode, vDOM: IDom) => node._vDOM = vDOM;
 
 export default render;

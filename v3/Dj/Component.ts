@@ -1,12 +1,11 @@
-import { AttributeType, IDom } from "../types/jsx";
+import { AttributeType, IDom, INode } from "../types/jsx";
 import nodeCompare from "./diff";
 
 abstract class Component {
   state: any;
   props: AttributeType;
   abstract render(): IDom;
-  _vDOM: any;
-  _DOM: any;
+  _DOM: INode;
 
   constructor(props: AttributeType){
     this.props = props;
@@ -17,8 +16,7 @@ abstract class Component {
     const vDOM = this.render();
     const realDOM = this._DOM;
 
-    nodeCompare(vDOM, realDOM.parentNode, this._vDOM);
-    this._vDOM = vDOM; // 이전 vDOM 갱신
+    nodeCompare(vDOM, realDOM.parentNode, realDOM);
   }
 
   static DJ_COMPONENT = true;

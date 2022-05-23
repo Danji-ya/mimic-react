@@ -15,9 +15,13 @@ interface IComponent {
 
 type VDomType = IComponent | string;
 
+interface INode extends Node {
+  _vDOM?: IDom;
+}
 
 export {
   AttributeType,
   IDom,
-  VDomType
+  INode,
+  VDomType,
 }
