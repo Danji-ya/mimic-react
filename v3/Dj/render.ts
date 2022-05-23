@@ -64,22 +64,41 @@ export function createOriginNode(vDOM: IDom) {
   return newNode;
 }
 
+export function updateNode(newNode: HTMLElement, vDOM: IDom, oldDOM?: IDom) {
+  const newProps = vDOM.attributes || {};
+  const oldProps = oldDOM && oldDOM.attributes || {};
 
+  // 새로운 이벤트나 속성 처리
+  Object.entries(newProps).forEach(([key, value]) => {
+    const newProp = newProps[key];
+    const oldProp = oldProps[key];
 
-export function updateNode(newNode: HTMLElement, vDOM: IDom){
-    // 이벤트나 속성 처리
-    Object.entries(vDOM.attributes || {}).forEach(([key, value]) => {
-      if(!value) return;
-
-      if(key.startsWith('on')){
-        const eventType = key.slice(2).toLocaleLowerCase();
-        newNode.addEventListener(eventType, value);
-
-        return;
-      }
+    if(newProp === oldProp) return;
+    if(!value) return;
+    
+    if(key.startsWith('on')){
+      const eventType = key.slice(2).toLowerCase();
+      newNode.addEventListener(eventType, value);
       
-      newNode.setAttribute(key, value);
-    });
+      return;
+    }
+    newNode.setAttribute(key, value);
+  });
+
+  // 기존 이벤트나 속성 삭제 처리
+  Object.entries(oldProps).forEach(([key, value]) => {
+    const newProp = newProps[key];
+
+    if(newProp != null) return;
+    
+    if(key.startsWith('on')){
+      const eventType = key.slice(2).toLowerCase();
+      newNode.removeEventListener(eventType, value);
+      
+      return;
+    }
+    newNode.removeAttribute(key);
+  });
 }
 
 export const isComponentType = (vDOM: IDom)  => Object.getPrototypeOf(vDOM.type).DJ_COMPONENT;

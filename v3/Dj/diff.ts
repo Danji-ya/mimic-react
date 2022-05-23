@@ -1,14 +1,11 @@
 import { IDom } from "../types/jsx";
-import { createOriginNode, isComponentType, vDomToNode } from "./render";
+import { createOriginNode, isComponentType, updateNode, vDomToNode } from "./render";
 
 // TODO: 경우의 수 테스트
 
 // TODO: 컴포넌트 타입 처리
 
-// TODO: 기존 렌더 attribute부분도 checked와 같은 속성 값 예외 처리
-
 function nodeCompare(vDOM: IDom, container: Node | null , oldDOM?: IDom, idx: number = 0){
-
   if(vDOM && !oldDOM){
     console.log('그냥 새로생긴 것');
     return vDomToNode(vDOM, container);
@@ -59,39 +56,6 @@ function nodeCompare(vDOM: IDom, container: Node | null , oldDOM?: IDom, idx: nu
       nodeCompare(newDomChild, container.childNodes[idx], oldDomChild, i);
     }
   }
-}
-
-function updateNode(newNode: HTMLElement ,vDOM: IDom, oldDOM?: IDom) {
-  // 새로운 이벤트나 속성 처리
-  Object.entries(vDOM.attributes || {}).forEach(([key, value]) => {
-    const newProp = vDOM.attributes[key];
-    const oldProp = oldDOM.attributes[key];
-
-    if(newProp === oldProp) return;
-    
-    if(key.startsWith('on')){
-      const eventType = key.slice(2).toLowerCase();
-      newNode.addEventListener(eventType, value);
-      
-      return;
-    }
-    newNode.setAttribute(key, value);
-  });
-
-  // 기존 이벤트나 속성 삭제 처리
-  Object.entries(oldDOM.attributes || {}).forEach(([key, value]) => {
-    const newProp = vDOM.attributes[key];
-
-    if(newProp != null) return;
-    
-    if(key.startsWith('on')){
-      const eventType = key.slice(2).toLowerCase();
-      newNode.removeEventListener(eventType, value);
-      
-      return;
-    }
-    newNode.removeAttribute(key);
-  });
 }
 
 const getMaxLength = (first: number = 0, second: number = 0) => Math.max(first, second);
