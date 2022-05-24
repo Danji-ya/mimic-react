@@ -1,4 +1,5 @@
 import { IDom, INode } from "../types/jsx";
+import Component from "./Component";
 
 function render(vDOM: IDom, container: Node) {
   vDomToNode(vDOM, container);
@@ -13,15 +14,20 @@ export function vDomToNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
 }
 
 export function componentNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
-  if(typeof vDOM.type === 'string') return;
+  const componentVDOM = createComponent(vDOM);
   
-  const C =  vDOM.type;
+  vDomToNode(componentVDOM, container, oldDOM);
+}
 
+export function createComponent(vDOM: IDom) {
+  if(typeof vDOM.type === 'string') return;
+
+  const C =  vDOM.type;
   const component = new C(vDOM.attributes || {});
   const componentVDOM = component.render();
   componentVDOM.DJ_COMPONENT = component; // component 식별을 위한 것
 
-  vDomToNode(componentVDOM, container, oldDOM);
+  return componentVDOM;
 }
 
 export function originNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
@@ -102,7 +108,11 @@ export const injectVDOMInToNode = (node: INode, vDOM: IDom) => {
   node._vDOM = vDOM;
 
   // 가장 최상단의 Node(컴포넌트)일 경우 해당 DOM을 저장
-  if(vDOM.DJ_COMPONENT) vDOM.DJ_COMPONENT._DOM = node;
+  injectRealDOMToComponent(vDOM.DJ_COMPONENT, node);
+}
+
+export const injectRealDOMToComponent = (component: Component, realDOM: INode) => {
+  if(component) component._DOM = realDOM;
 }
 
 export default render;

@@ -1,32 +1,31 @@
 import { IDom, INode } from "../types/jsx";
-import { createOriginNode, isComponentType, updateNode, injectVDOMInToNode, vDomToNode } from "./render";
+import { createOriginNode, isComponentType, updateNode, injectVDOMInToNode, vDomToNode, createComponent, injectRealDOMToComponent } from "./render";
 
 function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx: number = 0){
   const oldVDOM: IDom = realDOM && realDOM._vDOM;
 
   if(vDOM && !oldVDOM){
-    console.log('Case: 새로운 노드');
+    // console.log('Case: 새로운 노드');
     return vDomToNode(vDOM, container);
   }
   
   if(!vDOM && oldVDOM){
-    console.log('Case: 사라진 노드');
+    // console.log('Case: 사라진 노드');
     return container.removeChild(container.childNodes[idx]);
   }
   
   // 컴포넌트 타입의 경우
   if(isComponentType(vDOM)){
-    console.log('Case: 컴포넌트 타입');
+    // console.log('Case: 컴포넌트 타입');
 
-    // TODO: 컴포넌트 타입 처리
-    compareComponent();
+    componentCompare(vDOM, oldVDOM, idx);
     return;
   }
 
   // 노드의 타입이 다른경우
   // 두 노드의 타입이 다르면, 이전 트리를 버리고 완전히 새로운 트리를 구축
   if(vDOM.type !== oldVDOM.type) {
-    console.log('Case: 타입이 다른 노드');
+    // console.log('Case: 타입이 다른 노드');
     
     return container.replaceChild(createOriginNode(vDOM), container.childNodes[idx]);
   }
@@ -35,7 +34,7 @@ function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx:
   if(vDOM.type === oldVDOM.type) {
     // type이 text일 경우
     if(vDOM.type === 'TEXT_NODE') {
-      console.log('Case: 텍스트 타입');
+      // console.log('Case: 텍스트 타입');
       const { textContent: newTextContent } = vDOM.attributes;
       const { textContent: oldTextContent } = oldVDOM.attributes;
   
@@ -46,7 +45,7 @@ function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx:
       return;
     }
 
-    console.log('Case: 타입이 같은 노드');
+    // console.log('Case: 타입이 같은 노드');
 
     // 두 엘리먼트의 속성을 확인하여, 동일한 내역은 유지하고 변경된 속성들만 갱신  
     updateNode(container.childNodes[idx] as Element, vDOM, oldVDOM);
@@ -61,8 +60,13 @@ function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx:
   }
 }
 
-function compareComponent(){
-  console.log('TODO: 컴포넌트 비교작업');
+function componentCompare(vDOM: IDom, oldVDOM: IDom, idx: number = 0){
+  const nextComponentVDOM = createComponent(vDOM);
+  const realDOM  = oldVDOM.DJ_COMPONENT._DOM;
+
+  injectRealDOMToComponent(nextComponentVDOM.DJ_COMPONENT, realDOM);
+
+  nodeCompare(nextComponentVDOM, realDOM.parentNode, realDOM, idx);
 }
 
 const getMaxLength = (first: number = 0, second: number = 0) => Math.max(first, second);

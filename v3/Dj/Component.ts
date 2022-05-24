@@ -11,12 +11,14 @@ abstract class Component {
     this.props = props;
   }
 
-  setState(newState: any){
+  setState(newState: Record<string, any>){
     this.state = newState;
-    const vDOM = this.render();
-    const realDOM = this._DOM;
+    const realDOM = this._DOM;    
+    const componentVDOM = this.render();
+    // 어디서 시작되는지 알기 위해 현재 컴포넌트 정보를 저장
+    componentVDOM.DJ_COMPONENT = this;
 
-    nodeCompare(vDOM, realDOM.parentNode, realDOM);
+    nodeCompare(componentVDOM, realDOM.parentNode, realDOM);
   }
 
   static DJ_COMPONENT = true;
