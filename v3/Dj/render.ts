@@ -1,6 +1,6 @@
 import { IDom, INode } from "../types/jsx";
 
-function render(vDOM: IDom, container: Node, oldDOM?: IDom) {
+function render(vDOM: IDom, container: Node) {
   vDomToNode(vDOM, container);
 }
 
@@ -16,7 +16,7 @@ export function componentNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
   if(typeof vDOM.type === 'string') return;
   
   const C =  vDOM.type;
-  
+
   const component = new C(vDOM.attributes || {});
   const componentVDOM = component.render();
   componentVDOM.DJ_COMPONENT = component; // component 식별을 위한 것
@@ -24,15 +24,12 @@ export function componentNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
   vDomToNode(componentVDOM, container, oldDOM);
 }
 
-
 export function originNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
   let newNode: Node = createOriginNode(vDOM);
 
-  
   // 실제 부착
   container?.appendChild(newNode);
 }
-
 
 export function createOriginNode(vDOM: IDom) {
   let newNode: INode = null;
@@ -42,7 +39,7 @@ export function createOriginNode(vDOM: IDom) {
     const {textContent} = vDOM.attributes;
 
     newNode = document.createTextNode(textContent);
-    updateNodeVDOM(newNode, vDOM);
+    injectVDOMInToNode(newNode, vDOM);
   } else {
     newNode = vDOMType === "fragment"
       ? document.createDocumentFragment()
@@ -52,9 +49,6 @@ export function createOriginNode(vDOM: IDom) {
       updateNode(newNode as Element, vDOM);
     }
   }
-
-  // 가장 최상단의 Node일 경우 해당 dom을 저장
-  if(vDOM.DJ_COMPONENT) vDOM.DJ_COMPONENT._DOM = newNode;
 
   vDOM.children.forEach((child: any) => vDomToNode(child, newNode));
   
@@ -79,6 +73,7 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
       
       return;
     }
+
     newNode.setAttribute(key, value);
   });
 
@@ -97,12 +92,17 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
     newNode.removeAttribute(key);
   });
 
-  // 이전 노드를 비교할 vDOM
-  updateNodeVDOM(newNode, vDOM);
+  injectVDOMInToNode(newNode, vDOM);
 }
 
 export const isComponentType = (vDOM: IDom)  => Object.getPrototypeOf(vDOM.type).DJ_COMPONENT;
 
-export const updateNodeVDOM = (node: INode, vDOM: IDom) => node._vDOM = vDOM;
+// 이후 비교를 위한 과거 노드의 정보를 가진 vDOM객체 삽입
+export const injectVDOMInToNode = (node: INode, vDOM: IDom) => {
+  node._vDOM = vDOM;
+
+  // 가장 최상단의 Node(컴포넌트)일 경우 해당 DOM을 저장
+  if(vDOM.DJ_COMPONENT) vDOM.DJ_COMPONENT._DOM = node;
+}
 
 export default render;
