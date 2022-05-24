@@ -73,3 +73,37 @@ td,
 th {
   padding: 0;
 }
+
+div {
+  padding: 10px;
+}
+
+
+button {
+
+  padding: 8px 15px;
+
+  background: none;
+  border: none;
+  border-radius: 20px;
+
+  background-color: orange;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+ul {
+  padding: 10px;
+}
+
+ul li {
+  margin: 10px 0;
+}
+
+ul li input {
+  margin-right: 5px;
+}
