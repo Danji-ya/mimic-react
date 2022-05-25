@@ -25,9 +25,22 @@ export function createComponent(vDOM: IDom) {
   const C =  vDOM.type;
   const component = new C(vDOM.attributes || {});
   const componentVDOM = component.render();
-  componentVDOM.DJ_COMPONENT = component; // component 식별을 위한 것
+  injectComponentToVDOM(componentVDOM, component);
 
   return componentVDOM;
+}
+
+export function getVDOMFromOldComponent(vDOM: IDom, oldVDOM: IDom){
+  const oldComponent = oldVDOM.DJ_COMPONENT;
+  oldComponent.updateProps(vDOM.attributes);
+  
+  const nextComponentVDOM = oldComponent.render();
+  injectComponentToVDOM(nextComponentVDOM, oldComponent);
+
+  // 최신 vDOM 업데이트
+  injectVDOMInToNode(oldComponent._DOM, nextComponentVDOM);
+
+  return nextComponentVDOM;
 }
 
 export function originNode(vDOM: IDom, container: Node, oldDOM?: IDom) {
@@ -115,6 +128,10 @@ export const injectVDOMInToNode = (node: INode, vDOM: IDom) => {
 
 export const injectRealDOMToComponent = (component: Component, realDOM: INode) => {
   if(component) component._DOM = realDOM;
+}
+
+export const injectComponentToVDOM = (componentVDOM: IDom, component: Component) => {
+  componentVDOM.DJ_COMPONENT = component;
 }
 
 export default render;

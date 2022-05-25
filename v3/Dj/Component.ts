@@ -1,5 +1,6 @@
 import { AttributeType, IDom, INode } from "../types/jsx";
 import nodeCompare from "./diff";
+import { injectComponentToVDOM } from "./render";
 
 abstract class Component {
   state: any;
@@ -16,9 +17,13 @@ abstract class Component {
     const realDOM = this._DOM;    
     const componentVDOM = this.render();
     // 어디서 시작되는지 알기 위해 현재 컴포넌트 정보를 저장
-    componentVDOM.DJ_COMPONENT = this;
+    injectComponentToVDOM(componentVDOM, this);
 
     nodeCompare(componentVDOM, realDOM.parentNode, realDOM);
+  }
+
+  updateProps(props: AttributeType) {
+    this.props = props;
   }
 
   static DJ_COMPONENT = true;

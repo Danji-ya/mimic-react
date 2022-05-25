@@ -1,5 +1,5 @@
 import { IDom, INode } from "../types/jsx";
-import { createOriginNode, isComponentType, updateNode, injectVDOMInToNode, vDomToNode, createComponent, injectRealDOMToComponent } from "./render";
+import { createOriginNode, isComponentType, updateNode, injectVDOMInToNode, vDomToNode, createComponent, injectRealDOMToComponent, getVDOMFromOldComponent, injectComponentToVDOM } from "./render";
 
 function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx: number = 0){
   const oldVDOM: IDom = realDOM && realDOM._vDOM;
@@ -18,7 +18,7 @@ function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx:
   if(isComponentType(vDOM)){
     // console.log('Case: 컴포넌트 타입');
 
-    componentCompare(vDOM, oldVDOM, idx);
+    componentCompare(vDOM, oldVDOM, realDOM, idx);
     return;
   }
 
@@ -60,11 +60,9 @@ function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx:
   }
 }
 
-function componentCompare(vDOM: IDom, oldVDOM: IDom, idx: number = 0){
-  const nextComponentVDOM = createComponent(vDOM);
-  const realDOM  = oldVDOM.DJ_COMPONENT._DOM;
-
-  injectRealDOMToComponent(nextComponentVDOM.DJ_COMPONENT, realDOM);
+function componentCompare(vDOM: IDom, oldVDOM: IDom, realDOM: INode, idx: number = 0){
+  // 과거랑 현재랑 같은 컴포넌트인 경우
+  const nextComponentVDOM = getVDOMFromOldComponent(vDOM, oldVDOM);
 
   nodeCompare(nextComponentVDOM, realDOM.parentNode, realDOM, idx);
 }
