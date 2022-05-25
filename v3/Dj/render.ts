@@ -84,7 +84,7 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
     const oldProp = oldProps[key];
 
     if(newProp === oldProp) return;
-    if(key !== 'checked' && !value) return;
+    if(!isSpecialAttribute(key) && !value) return;
     
     if(key.startsWith('on')){
       const eventType = key.slice(2).toLowerCase();
@@ -96,6 +96,10 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
     }
 
     newNode.setAttribute(key, value);
+
+    if(isBooleanAttribute(key) && !value){
+      newNode.removeAttribute(key);
+    }
   });
 
   // 기존 이벤트나 속성 삭제 처리
@@ -110,6 +114,7 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
       
       return;
     }
+
     newNode.removeAttribute(key);
   });
 
@@ -133,5 +138,9 @@ export const injectRealDOMToComponent = (component: Component, realDOM: INode) =
 export const injectComponentToVDOM = (componentVDOM: IDom, component: Component) => {
   componentVDOM.DJ_COMPONENT = component;
 }
+
+export const isSpecialAttribute = (attribute: string) => attribute === 'value' || isBooleanAttribute(attribute);
+
+export const isBooleanAttribute = (attribute: string) => attribute === 'checked' || attribute === 'disabled';
 
 export default render;
