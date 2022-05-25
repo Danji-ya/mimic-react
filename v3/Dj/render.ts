@@ -71,11 +71,13 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
     const oldProp = oldProps[key];
 
     if(newProp === oldProp) return;
-    if(!value) return;
+    if(key !== 'checked' && !value) return;
     
     if(key.startsWith('on')){
       const eventType = key.slice(2).toLowerCase();
       newNode.addEventListener(eventType, value);
+
+      if(oldProp) newNode.removeEventListener(eventType, oldProp);
       
       return;
     }
