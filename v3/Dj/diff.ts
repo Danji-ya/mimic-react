@@ -1,5 +1,5 @@
 import { IDom, INode } from "../types/jsx";
-import { createOriginNode, isComponentType, updateNode, injectVDOMInToNode, vDomToNode, createComponent, injectRealDOMToComponent, getVDOMFromOldComponent, injectComponentToVDOM } from "./render";
+import { createOriginNode, isComponentType, updateNode, injectVDOMInToNode, vDomToNode, getVDOMFromOldComponent } from "./render";
 
 function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx: number = 0){
   const oldVDOM: IDom = realDOM && realDOM._vDOM;
