@@ -19,7 +19,8 @@ abstract class Component {
     // 어디서 시작되는지 알기 위해 현재 컴포넌트 정보를 저장
     injectComponentToVDOM(componentVDOM, this);
 
-    nodeCompare(componentVDOM, realDOM.parentNode, realDOM);
+    nodeCompare(componentVDOM, realDOM.parentNode, realDOM, 
+      [...realDOM.parentNode.childNodes].indexOf(realDOM as ChildNode));
   }
 
   updateProps(props: AttributeType) {
