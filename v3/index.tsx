@@ -110,6 +110,7 @@ class App extends Dj.Component {
 
     return (
       <div>
+        <h2>투두리스트</h2>
         <Todo books={books} addItem={this.addItem} checkItem={this.checkItem} removeItem={this.removeItem} />
       </div>
     )

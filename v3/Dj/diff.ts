@@ -1,5 +1,5 @@
 import { IDom, INode } from "../types/jsx";
-import { createOriginNode, isComponentType, updateElement, injectVDOMInToNode, vDomToNode, getVDOMFromOldComponent } from "./render";
+import { createOriginNode, getMaxLength, getVDOMFromOldComponent, injectVDOMInToNode, isComponentType, updateElement, vDomToNode } from "./utils";
 
 function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx: number = 0){
   const oldVDOM: IDom = realDOM && realDOM._vDOM;
@@ -66,7 +66,5 @@ function componentCompare(vDOM: IDom, oldVDOM: IDom, realDOM: INode, idx: number
 
   nodeCompare(nextComponentVDOM, realDOM.parentNode, realDOM, idx);
 }
-
-const getMaxLength = (first: number = 0, second: number = 0) => Math.max(first, second);
 
 export default nodeCompare;

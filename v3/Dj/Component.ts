@@ -1,6 +1,6 @@
 import { AttributeType, IDom, INode } from "../types/jsx";
 import nodeCompare from "./diff";
-import { injectComponentToVDOM } from "./render";
+import { injectComponentToVDOM } from "./utils";
 
 abstract class Component {
   state: any;
