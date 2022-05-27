@@ -65,7 +65,7 @@ export function createOriginNode(vDOM: IDom) {
       : document.createElement(vDOMType);
 
     if(!(newNode instanceof DocumentFragment)) {
-      updateNode(newNode as Element, vDOM);
+      updateElement(newNode as Element, vDOM);
     }
   }
 
@@ -74,7 +74,7 @@ export function createOriginNode(vDOM: IDom) {
   return newNode;
 }
 
-export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
+export function updateElement(ele: Element, vDOM: IDom, oldDOM?: IDom) {
   const newProps = vDOM.attributes || {};
   const oldProps = oldDOM && oldDOM.attributes || {};
 
@@ -88,17 +88,17 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
     
     if(key.startsWith('on')){
       const eventType = key.slice(2).toLowerCase();
-      newNode.addEventListener(eventType, value);
+      ele.addEventListener(eventType, value);
 
-      if(oldProp) newNode.removeEventListener(eventType, oldProp);
+      if(oldProp) ele.removeEventListener(eventType, oldProp);
       
       return;
     }
 
-    newNode.setAttribute(key, value);
+    ele.setAttribute(key, value);
 
     if(isBooleanAttribute(key) && !value){
-      newNode.removeAttribute(key);
+      ele.removeAttribute(key);
     }
   });
 
@@ -110,15 +110,15 @@ export function updateNode(newNode: Element, vDOM: IDom, oldDOM?: IDom) {
     
     if(key.startsWith('on')){
       const eventType = key.slice(2).toLowerCase();
-      newNode.removeEventListener(eventType, value);
+      ele.removeEventListener(eventType, value);
       
       return;
     }
 
-    newNode.removeAttribute(key);
+    ele.removeAttribute(key);
   });
 
-  injectVDOMInToNode(newNode, vDOM);
+  injectVDOMInToNode(ele, vDOM);
 }
 
 export const isComponentType = (vDOM: IDom)  => Object.getPrototypeOf(vDOM.type).DJ_COMPONENT;

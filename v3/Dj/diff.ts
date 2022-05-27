@@ -1,5 +1,5 @@
 import { IDom, INode } from "../types/jsx";
-import { createOriginNode, isComponentType, updateNode, injectVDOMInToNode, vDomToNode, getVDOMFromOldComponent } from "./render";
+import { createOriginNode, isComponentType, updateElement, injectVDOMInToNode, vDomToNode, getVDOMFromOldComponent } from "./render";
 
 function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx: number = 0){
   const oldVDOM: IDom = realDOM && realDOM._vDOM;
@@ -48,7 +48,7 @@ function nodeCompare(vDOM: IDom, container: Node | null , realDOM?: INode , idx:
     // console.log('Case: 타입이 같은 노드');
 
     // 두 엘리먼트의 속성을 확인하여, 동일한 내역은 유지하고 변경된 속성들만 갱신  
-    updateNode(container.childNodes[idx] as Element, vDOM, oldVDOM);
+    updateElement(container.childNodes[idx] as Element, vDOM, oldVDOM);
 
     // 노드의 처리가 끝나면, 이어서 해당 노드의 자식들을 재귀적으로 처리
     for(let i=0; i < getMaxLength(vDOM.children.length, realDOM.childNodes.length); i+=1){
