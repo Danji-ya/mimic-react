@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --config webpack.dev.js",
-    "start-v2": "webpack serve --config webpack.dev2.js",
-    "start-v3": "webpack serve --config webpack.dev3.js"
+    "start": "webpack serve --config webpack.dev.js --env version=v1",
+    "start-v2": "webpack serve --config webpack.dev.js --env version=v2",
+    "start-v3": "webpack serve --config webpack.dev.js --env version=v3"
   },
   "author": "",
   "license": "ISC",

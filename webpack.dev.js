@@ -1,53 +1,66 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { ProvidePlugin } = require("webpack");
 
-module.exports = {
-  mode: "development",
-  entry: {
-    main: "./v1/index.ts",
-  },
-  resolve: {
-    extensions: [".ts", ".tsx", ".js", ".jsx"],
-  },
-  devServer: {
-    historyApiFallback: true,
-    hot: true,
-    port: 9000,
-    open: true,
-  },
-  module: {
-    rules: [
-      {
-        test: /\.(tsx|ts)$/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: ["@babel/preset-env", "@babel/preset-typescript"],
-            plugins: [
-              [
-                "@babel/plugin-transform-react-jsx",
-                {
-                  runtime: "classic",
-                  pragma: "jsx",
-                },
+const JSX_PATH = {
+  v1: "v1/core/jsx-runtime.ts",
+  v2: "v2/Dj/jsx.ts",
+  v3: "v3/Dj/jsx.ts",
+};
+
+module.exports = (env) => {
+  const main = `/${env.version}/index.tsx`;
+  const jsxPath = JSX_PATH[env.version];
+
+  return {
+    mode: "development",
+    entry: {
+      main,
+    },
+    resolve: {
+      extensions: [".ts", ".tsx", ".js", ".jsx"],
+    },
+    devServer: {
+      historyApiFallback: true,
+      hot: true,
+      port: 9000,
+      open: true,
+    },
+    devtool: "inline-source-map",
+    module: {
+      rules: [
+        {
+          test: /\.(tsx|ts)$/,
+          use: {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env", "@babel/preset-typescript"],
+              plugins: [
+                [
+                  "@babel/plugin-transform-react-jsx",
+                  {
+                    runtime: "classic",
+                    pragma: "jsx",
+                  },
+                ],
               ],
-            ],
+            },
           },
+          exclude: /(node_modules)/,
         },
-        exclude: /(node_modules)/,
-      },
-    ],
-  },
-  plugins: [
-    new ProvidePlugin({
-      jsx: [
-        path.resolve(path.join(__dirname, "v1/core/jsx-runtime.ts")),
-        "default",
+        {
+          test: /\.css$/i,
+          use: ["style-loader", "css-loader"],
+        },
       ],
-    }),
-    new HtmlWebpackPlugin({
-      template: "./index.html",
-    }),
-  ],
+    },
+    plugins: [
+      new ProvidePlugin({
+        jsx: [path.resolve(path.join(__dirname, jsxPath)), "default"],
+      }),
+      new HtmlWebpackPlugin({
+        template: "./index.html",
+      }),
+    ],
+  };
 };
