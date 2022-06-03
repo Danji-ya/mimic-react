@@ -33,3 +33,21 @@ return (
 #### 삭제
 
 ![삭제](https://user-images.githubusercontent.com/53927959/170624635-e0324cb2-3ecb-49ed-ab71-a5029a775ca8.gif)
+
+<br>
+
+## ⚙️ 실행 방법
+
+```
+// 관련 패키지 설치
+$ npm install
+
+// version1 실행
+$ npm start
+
+// version2 실행
+$ npm run start-v2
+
+// version3 실행
+$ npm run start-v3
+```
