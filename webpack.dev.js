@@ -6,6 +6,7 @@ const JSX_PATH = {
   v1: "v1/core/jsx-runtime.ts",
   v2: "v2/Dj/jsx.ts",
   v3: "v3/Dj/jsx.ts",
+  v4: "v4/Dj/jsx.ts",
 };
 
 module.exports = (env) => {
