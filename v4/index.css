@@ -50,7 +50,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -78,9 +80,7 @@ div {
   padding: 10px;
 }
 
-
 button {
-
   padding: 8px 15px;
 
   background: none;
@@ -97,7 +97,7 @@ button:hover {
 }
 
 ul {
-  padding: 10px;
+  padding: 0;
 }
 
 ul li {
@@ -106,4 +106,16 @@ ul li {
 
 ul li input {
   margin-right: 5px;
+}
+
+ul li button {
+  margin-left: 5px;
+}
+
+.NewTodo-wrapper {
+  padding-left: 0;
+}
+
+.NewTodo-wrapper button {
+  margin-left: 5px;
 }
