@@ -1,52 +1,35 @@
-# VanillaJS로 JSX 및 diff 알고리즘 + 중앙상태관리를 흉내내본 저장소
+<h1 align="center">Mimic React 🎩</h1>
+<p>리액트 라이브러리를 모방한 자바스크립트 프로젝트</p>
 
-## 👀 실행 결과
+### Features
 
-### JSX 문법
+- HTML구문으로 작성된 코드를 DOM으로 변환
+- Component를 DOM으로 변환
 
-- 일반 태그 및 컴포넌트 적용
+  ![carbon (1)](https://github.com/Danji-ya/JS_mimic-react/assets/53927959/83c6e349-ec2f-4376-bb83-21350d2e18e7)
 
-```ts
-return (
-  <div>
-    <h2>투두리스트</h2>
-    <Todo books={books} addItem={this.addItem} checkItem={this.checkItem} removeItem={this.removeItem} />
-  </div>
-)
-```
+- Diffing Algorithm으로 Element 생성, 수정, 삭제
 
-<img width="825" alt="스크린샷 2022-05-27 오후 12 32 05" src="https://user-images.githubusercontent.com/53927959/170624148-23085f0d-26b1-41e9-a9b1-64c640118782.png">
+  **엘리먼트의 타입이 다른 경우**
 
-</br>
+  이전 트리를 버리고 완전히 새로운 트리를 구축
 
-### diff 알고리즘을 사용한 최적화
+  **엘리먼트의 타입이 같은 경우**
 
-#### 추가
+  두 엘리먼트의 속성을 확인하여 동일한 내역은 유지하고 변경된 속성들만 갱신
 
-![추가](https://user-images.githubusercontent.com/53927959/170624334-b03d0fef-c4be-4fef-8795-384ac73bf240.gif)
+  **같은 타입의 컴포넌트 엘리먼트**
 
+  새로운 엘리먼트의 내용을 반영하기 위해 현재 컴포넌트 인스턴스의 props를 갱신
 
-#### 수정
+- 컴포넌트에 종속되는 상태관리가 아닌 컴포넌트 외부에서 상태를 관리하는 중앙 상태관리 기능
 
-![수정](https://user-images.githubusercontent.com/53927959/170624517-5e5fd377-fd80-4a22-99b3-ca1d34443b2c.gif)
+  ![carbon (2)](https://github.com/Danji-ya/JS_mimic-react/assets/53927959/55182264-0882-4751-a0e3-186412f65c0b)
 
-#### 삭제
-
-![삭제](https://user-images.githubusercontent.com/53927959/170624635-e0324cb2-3ecb-49ed-ab71-a5029a775ca8.gif)
-
-
-### 중앙 상태 관리
-컴포넌트에 종속되는 상태관리가 아닌 컴포넌트 외부에서 상태를 관리하도록 중앙 상태 관리 기능을 추가하였다.
-
-
-
-
-<br>
-
-## ⚙️ 실행 방법
+### Getting Started
 
 ```
-// 관련 패키지 설치
+// 실행에 필요한 패키지 설치
 $ npm install
 
 // version1 실행
