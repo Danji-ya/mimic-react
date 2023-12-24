@@ -5,8 +5,7 @@
 
 - HTML구문으로 작성된 코드를 DOM으로 변환
 - Component를 DOM으로 변환
-
-  ![carbon](https://github.com/Danji-ya/JS_mimic-react/assets/53927959/faaa916e-1b3f-451d-9490-e6ea7204953d)
+  <p align="left"><img src="https://github.com/Danji-ya/JS_mimic-react/assets/53927959/faaa916e-1b3f-451d-9490-e6ea7204953d" alt="example code" width='450px'></p>
 
 - Diffing Algorithm으로 Element 생성, 수정, 삭제
 
@@ -23,8 +22,7 @@
   새로운 엘리먼트의 내용을 반영하기 위해 현재 컴포넌트 인스턴스의 props를 갱신
 
 - 컴포넌트에 종속되는 상태관리가 아닌 컴포넌트 외부에서 상태를 관리하는 중앙 상태관리 기능
-
-  ![carbon (3)](https://github.com/Danji-ya/JS_mimic-react/assets/53927959/eee63aea-0b96-4fcc-98c7-293f48325fcc)
+  <p align="left"><img src="https://github.com/Danji-ya/JS_mimic-react/assets/53927959/eee63aea-0b96-4fcc-98c7-293f48325fcc" alt="example code" width='450px'></p>
 
 ### Getting Started
 
