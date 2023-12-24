@@ -1,9 +1,7 @@
-interface IBook {
+interface ITodo {
   id: number;
   completed: boolean;
   content: string;
 }
 
-export {
-  IBook
-}
+export { ITodo };

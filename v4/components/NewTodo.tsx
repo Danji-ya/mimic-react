@@ -22,11 +22,12 @@ class NewTodo extends Dj.Component {
   }
 
   handleAddClick() {
+    const { addItem } = this.props;
     const { value } = this.state;
 
-    if (value === "") return alert("책이름을 입력해주세요.");
+    if (value === "") return alert("Write down your todo");
 
-    this.props.addItem(value);
+    addItem(value);
   }
 
   render() {
@@ -37,7 +38,7 @@ class NewTodo extends Dj.Component {
           onInput={this.handleInputChange}
           value={this.state.value}
         />
-        <button onClick={this.handleAddClick}>책추가</button>
+        <button onClick={this.handleAddClick}>Add</button>
       </div>
     );
   }
